@@ -10,7 +10,7 @@ import './TournamentBracket.css';
 
 const TournamentBracket = () => {
   const [zoomLevel, setZoomLevel] = useState(0.8);
-  const [bracketType, setBracketType] = useState<BracketType>('single');
+  const [bracketType, setBracketType] = useState<BracketType>('double');
   
   const handleZoomIn = () => {
     setZoomLevel(prev => Math.min(prev + 0.2, 2));
