@@ -8,7 +8,8 @@ import {
   useEdgesState,
   addEdge,
   ConnectionLineType,
-  Panel
+  Panel,
+  BackgroundVariant
 } from '@xyflow/react';
 import MatchNode from './MatchNode';
 import ResultNode from './ResultNode';
@@ -44,16 +45,18 @@ const BracketFlow: React.FC<BracketFlowProps> = ({ zoomLevel }) => {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         connectionLineType={ConnectionLineType.SmoothStep}
-        defaultZoom={zoomLevel}
+        defaultViewport={{ x: 0, y: 0, zoom: zoomLevel }}
         minZoom={0.2}
         maxZoom={2}
         fitView
         attributionPosition="bottom-right"
         style={{ background: '#0A0A0A' }}
-        deleteKeyCode={[]}
+        nodesDraggable={false} // Disable dragging for all nodes
+        panOnDrag={true} // Enable panning the entire canvas
+        deleteKeyCode={null} // Disable deletion with delete key
       >
         <Controls showInteractive={false} />
-        <Background color="#333" variant="dots" gap={12} size={1} />
+        <Background color="#333" variant={BackgroundVariant.Dots} gap={12} size={1} />
       </ReactFlow>
     </div>
   );

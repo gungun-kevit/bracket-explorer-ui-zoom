@@ -5,11 +5,12 @@ import { cn } from '@/lib/utils';
 
 interface PlayerData {
   name: string;
-  score?: number;
-  seed?: string;
+  score?: string | null;
+  seed?: string | null;
   time?: string;
   table?: string;
-  matchId?: string;
+  matchId?: number | string;
+  isWinner?: boolean;
 }
 
 interface MatchNodeProps {
@@ -20,18 +21,30 @@ interface MatchNodeProps {
     winnerIndex?: number;
     round?: number;
     position?: number;
+    matchId?: number;
+    state?: string;
   };
   isConnectable: boolean;
 }
 
 const MatchNode = ({ data, isConnectable }: MatchNodeProps) => {
-  const { title, player1, player2, winnerIndex, round } = data;
+  const { title, player1, player2, state } = data;
+  
+  // Determine match status styling
+  const getMatchStatusClass = () => {
+    switch(state) {
+      case 'SCORE_DONE': return 'match-completed';
+      case 'WALK_OVER': return 'match-walkover';
+      case 'DONE': return 'match-completed';
+      default: return '';
+    }
+  };
   
   return (
-    <div className="match-node">
+    <div className={cn("match-node", getMatchStatusClass())}>
       {title && <div className="match-title">{title}</div>}
       
-      <div className={cn("player", winnerIndex === 0 ? "winner" : "")}>
+      <div className={cn("player", player1?.isWinner ? "winner" : "")}>
         <div className="player-name">
           {player1?.name || 'TBD'}
           {player1?.seed && <span className="player-seed">{player1.seed}</span>}
@@ -45,14 +58,14 @@ const MatchNode = ({ data, isConnectable }: MatchNodeProps) => {
               Table {player1.table}
             </div>
           )}
-          {player1?.matchId && (
-            <div className="match-id">{player1.matchId}</div>
+          {data.matchId && (
+            <div className="match-id">{data.matchId}</div>
           )}
         </div>
         <div className="score">{player1?.score ?? 0}</div>
       </div>
       
-      <div className={cn("player", winnerIndex === 1 ? "winner" : "")}>
+      <div className={cn("player", player2?.isWinner ? "winner" : "")}>
         <div className="player-name">
           {player2?.name || 'TBD'}
           {player2?.seed && <span className="player-seed">{player2.seed}</span>}
@@ -65,9 +78,6 @@ const MatchNode = ({ data, isConnectable }: MatchNodeProps) => {
             <div className="table-number">
               Table {player2.table}
             </div>
-          )}
-          {player2?.matchId && (
-            <div className="match-id">{player2.matchId}</div>
           )}
         </div>
         <div className="score">{player2?.score ?? 0}</div>
