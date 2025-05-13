@@ -162,6 +162,26 @@
   opacity: 0.8;
 }
 
+/* Double Elimination Specific Styles */
+.upper-bracket-node .match-title {
+  color: #00ff00; /* Green for upper bracket */
+}
+
+.lower-bracket-node .match-title {
+  color: #ff9900; /* Orange for lower bracket */
+}
+
+.round-label.upper-bracket {
+  color: #00ff00;
+  border-bottom: 2px solid #00ff00;
+}
+
+.round-label.lower-bracket {
+  color: #ff9900;
+  border-bottom: 2px solid #ff9900;
+  margin-top: 40px;
+}
+
 /* Customize React Flow */
 .react-flow__handle {
   width: 8px;

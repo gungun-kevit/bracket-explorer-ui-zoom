@@ -8,13 +8,14 @@ import {
   useEdgesState,
   addEdge,
   ConnectionLineType,
-  Panel,
   BackgroundVariant
 } from '@xyflow/react';
 import MatchNode from './MatchNode';
 import ResultNode from './ResultNode';
 import RoundLabel from './RoundLabel';
 import { initialNodes, initialEdges } from '../data/bracketData';
+import { initialDoubleNodes, initialDoubleEdges } from '../data/doubleBracketData';
+import { BracketType } from '@/types/bracket';
 
 const nodeTypes = {
   match: MatchNode,
@@ -24,14 +25,26 @@ const nodeTypes = {
 
 interface BracketFlowProps {
   zoomLevel: number;
+  bracketType: BracketType;
 }
 
-const BracketFlow: React.FC<BracketFlowProps> = ({ zoomLevel }) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+const BracketFlow: React.FC<BracketFlowProps> = ({ zoomLevel, bracketType }) => {
+  // Use the appropriate nodes and edges based on bracket type
+  const initialNodesData = bracketType === 'single' ? initialNodes : initialDoubleNodes;
+  const initialEdgesData = bracketType === 'single' ? initialEdges : initialDoubleEdges;
+  
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodesData);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: '#555', strokeWidth: 2 } }, eds)),
+    (params: any) => setEdges((eds) => addEdge(
+      { 
+        ...params, 
+        animated: true, 
+        style: { stroke: '#555', strokeWidth: 2 } 
+      }, 
+      eds
+    )),
     [setEdges]
   );
 

@@ -23,12 +23,13 @@ interface MatchNodeProps {
     position?: number;
     matchId?: number;
     state?: string;
+    bracket?: 'upper' | 'lower'; // Added bracket type
   };
   isConnectable: boolean;
 }
 
 const MatchNode = ({ data, isConnectable }: MatchNodeProps) => {
-  const { title, player1, player2, state } = data;
+  const { title, player1, player2, state, bracket } = data;
   
   // Determine match status styling
   const getMatchStatusClass = () => {
@@ -41,7 +42,7 @@ const MatchNode = ({ data, isConnectable }: MatchNodeProps) => {
   };
   
   return (
-    <div className={cn("match-node", getMatchStatusClass())}>
+    <div className={cn("match-node", getMatchStatusClass(), bracket === 'upper' ? 'upper-bracket-node' : bracket === 'lower' ? 'lower-bracket-node' : '')}>
       {title && <div className="match-title">{title}</div>}
       
       <div className={cn("player", player1?.isWinner ? "winner" : "")}>

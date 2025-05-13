@@ -17,3 +17,10 @@ export interface Match {
   state: string;
   participants: Participant[];
 }
+
+export interface DoubleBracket {
+  upper: Match[];
+  lower: Match[];
+}
+
+export type BracketType = 'single' | 'double';
